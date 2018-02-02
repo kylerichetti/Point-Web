@@ -1,3 +1,4 @@
+import math
 class Vertex:
     def __init__(self, canvas, x, y, radius):
         self.canvas = canvas

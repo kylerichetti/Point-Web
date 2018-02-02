@@ -1,3 +1,4 @@
+from pointWebVertex import *
 class Mesh:
     def __init__(self, canvas):
         self.canvas = canvas
