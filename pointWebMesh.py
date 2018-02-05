@@ -37,6 +37,13 @@ class Mesh:
 
     def onLeftMousePress(self, event):
         self._dragData["item"] = self.canvas.find_closest(event.x, event.y)[0]
+
+        #This is to prevent the background from getting moved on accident
+        #If the background has no tags, then it'll work
+        #Still feels like it couples it too closely, but it'll do for now
+        if len(self.canvas.gettags(self._dragData["item"])) == 0:
+            self._dragData["item"] = None
+            return
         #The vert will snap so that its center is directly under the mouse
         #It looks a little rough, but is functional for now
         #I'll have to figure out how to smooth the whole thing later
@@ -58,7 +65,10 @@ class Mesh:
         deltaX = event.x - self._dragData["x"]
         deltaY = event.y - self._dragData["y"]
         #Move the object
-        self.canvas.move(self._dragData["item"], deltaX, deltaY)
+        try:
+            self.canvas.move(self._dragData["item"], deltaX, deltaY)
+        except:
+            return
         #Record the new position
         self._dragData["x"] = event.x
         self._dragData["y"] = event.y

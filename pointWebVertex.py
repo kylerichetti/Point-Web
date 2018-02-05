@@ -30,7 +30,6 @@ class Vertex:
     def drawConnections(self):
         for vert in self.connectedVerticies:
             #Catch div by 0
-            theta = 0 #Might be able to remove this line? Haven't tested
             try:
                 theta = math.atan( (vert.getY() - self.y) / (vert.getX() - self.x) )
             except:
@@ -81,8 +80,9 @@ class Vertex:
                 x2 = (vert.getRadius() * math.cos(theta - math.pi)) + vert.getX()
                 y2 = (vert.getRadius() * math.sin(theta - math.pi)) + vert.getY()
             
-            self.canvas.create_line(x1, y1, x2, y2,
-                                    fill="Green", width=3, tag="Connection")
+            i = self.canvas.create_line(x1, y1, x2, y2,
+                                        fill="Green", width=3, tag="Connection")
+            #self.canvas.coords(i, x1,y2,x2,y1)
 
     def addConnection(self, vert):
         self.connectedVerticies.append(vert)
@@ -108,6 +108,8 @@ class Vertex:
 
     #Need to look for a string comparison function
     #Python probably has one built in that would work better
+    #Also, might want to use a bool to help with when its selected?
+        #Need to think more on that one, get my head straight on it
     def toggleColor(self):
         if self.fillColor == "White":
             self.fillColor = "Red"

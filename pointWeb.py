@@ -7,11 +7,12 @@
     #Seems to be fixed since all verticies are no longer rerendered on release
 #Add visual indications when a vertex has been selected to add a new connection: Done
 
+#Use canvas.coords to move connections instead of deleting and rerendering them
 #Allow the creation and removal of verticies
     #Perhaps right clicking on a vertex selects it, and from there it can be deleted?
 #Fix the Mesh funcionts for checking, adding, and removing verticies
     #Details are in the pointWebMesh class
-#Decide how to handle connections when verticies overlap
+#Decide how to handle drawing connections when verticies overlap
 
 
 import math
@@ -37,7 +38,6 @@ m.addVertex(Vertex(w, 500, 400, stdRadius))
 m.addVertex(Vertex(w, 300, 200, stdRadius))
 m.addVertex(Vertex(w, 300, 400, stdRadius))
 
-#m.addConnection(0,2)
 m.addConnection(0,1)
 m.addConnection(0,2)
 m.addConnection(1,2)
