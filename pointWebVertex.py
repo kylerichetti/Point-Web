@@ -5,35 +5,32 @@ class Vertex:
         self.x = x
         self.y = y
         self.radius = radius
-        self.handleNum = 0
+        self.handleNum = None
         self.connectedVerticies = []
+        self.fillColor = "White"
 
     def updateCoords(self, coords):
         (x,y) = coords
         self.x = x
         self.y = y
-
         
     def render(self):
         self.drawConnections()
-        self.canvas.create_oval(self.x - self.radius,
+        #If vert is already drawn, delete it
+        if self.handleNum:
+            self.canvas.delete(self.handleNum)
+        
+        self.handleNum = self.canvas.create_oval(self.x - self.radius,
                                 self.y - self.radius,
                                 self.x + self.radius,
                                 self.y + self.radius,
                                 tag = ("vert"),
-                                fill = "White")
-        #Need additional checks to make sure the oval is grabbed,
-        #not a line. (Which can happen if two verts are overlapping)
-        self.handleNum = self.canvas.find_enclosed(self.x - self.radius*2,
-                                                   self.y - self.radius*2,
-                                                   self.x + self.radius*2,
-                                                   self.y + self.radius*2)[0]
-        
+                                fill = self.fillColor)
 
     def drawConnections(self):
         for vert in self.connectedVerticies:
-            #Need to catch div by 0
-            theta = 0
+            #Catch div by 0
+            theta = 0 #Might be able to remove this line? Haven't tested
             try:
                 theta = math.atan( (vert.getY() - self.y) / (vert.getX() - self.x) )
             except:
@@ -108,3 +105,11 @@ class Vertex:
         return self.radius
     def getHandleNum(self):
         return self.handleNum
+
+    #Need to look for a string comparison function
+    #Python probably has one built in that would work better
+    def toggleColor(self):
+        if self.fillColor == "White":
+            self.fillColor = "Red"
+        else:
+            self.fillColor = "White"

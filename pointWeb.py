@@ -2,11 +2,16 @@
 #Animate connections to move in real time: Done
     #Erase and rerender just the connections?: Done
     #Might need a way just redraw connections related to the vertext being moved: Done
-#Allow the creation and removal of verticies
-#Fix the Mesh funcionts for checking, adding, and removing verticies
-    #Section begins on line 299, further notes are there
 #Fix connections to always stop on the correct side of the circle: Done
-#Find a better way to associate verticies and their handle numbers
+#Find a better way to associate verticies and their handle numbers: Done*
+    #Seems to be fixed since all verticies are no longer rerendered on release
+#Add visual indications when a vertex has been selected to add a new connection: Done
+
+#Allow the creation and removal of verticies
+    #Perhaps right clicking on a vertex selects it, and from there it can be deleted?
+#Fix the Mesh funcionts for checking, adding, and removing verticies
+    #Details are in the pointWebMesh class
+#Decide how to handle connections when verticies overlap
 
 
 import math

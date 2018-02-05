@@ -21,7 +21,7 @@ class Mesh:
         return self.verticies[v1].isConnected(self.verticies[v2])
 
     def render(self):
-        self.canvas.delete("vert")
+        #self.canvas.delete("vert")
         self.canvas.delete("Connection")
         for vert in self.verticies:
             vert.render()
@@ -45,16 +45,8 @@ class Mesh:
         self._dragData["y"] = vert.getY()
 
     def onLeftMouseRelease(self, event):
-        #Find vertex object in mesh array
-        vert = self.findVertWithHandleNum(self._dragData["item"])
-        
-        #Update vertex
-        #Not sure on scope here again. Gets into pass by reference and how that
-        #plays with arrays. Also not sure on best practices
-        #vert.updateCoords( (self._dragData["x"], self._dragData["y"]) )
-    
         #Re-render
-        self.render()
+        self.rerenderConnections()
         
         #Reset drag data
         self._dragData["item"] = None
@@ -79,11 +71,13 @@ class Mesh:
     def onRightMousePress(self, event):
         #Check if an item has not already been selected
         if self._connectionData["item1"] == None:
-            #Store the first item
-            self._connectionData["item1"] = self.canvas.find_closest(event.x, event.y)[0]
-            #Visual indication?
-            #print(self._connectionData["item1"])
+            #Select the item that was clicked on
+            item = self.canvas.find_closest(event.x,event.y)[0]            
+            #Store the first item with its new color
+            self._connectionData["item1"] = self.toggleVertColor(item)
         else:
+            #Revert color of item 1
+            self._connectionData["item1"] = self.toggleVertColor(self._connectionData["item1"])
             #Store second item
             self._connectionData["item2"] = self.canvas.find_closest(event.x, event.y)[0]
             #Checks
@@ -127,4 +121,15 @@ class Mesh:
             if vert.getHandleNum() == handleNum:
                 #Not sure if I want to return the vert itself or
                 #a way to identify it in the mesh's array
+                #Currently returning the vert itself
                 return vert
+            
+    def toggleVertColor(self, handleNum):
+        #Find the vert in the mesh's array
+            item = self.findVertWithHandleNum(handleNum)
+            #Toggle its color
+            item.toggleColor()
+            #Render so that the color change is visible
+            item.render()
+            #Return the new handleNum
+            return item.getHandleNum()
