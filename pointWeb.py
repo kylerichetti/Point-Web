@@ -18,7 +18,10 @@
 import math
 from tkinter import *
 
-from pointWebMesh import *
+#from pointWebMesh import *
+
+#Also imports the mesh and verticies
+from pointWebControlPanel import *
 
 canvasWidth = 800
 canvasHeight = 600
@@ -32,6 +35,10 @@ w.pack()
 w.create_rectangle(0,0,canvasWidth,canvasHeight,fill='black',outline='black')
 
 m = Mesh(w)
+
+cp = pwControlPanel(root, m)
+cp.pack()
+
 m.addVertex(Vertex(w, 600, 300, stdRadius))
 m.addVertex(Vertex(w, 500, 200, stdRadius))
 m.addVertex(Vertex(w, 500, 400, stdRadius))

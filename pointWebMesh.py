@@ -1,14 +1,44 @@
+#TODO:
+#REALLY need to standardize if functinos are being passed a vert object
+#or their handle number
 from pointWebVertex import *
 class Mesh:
     def __init__(self, canvas):
         self.canvas = canvas
+
+        #Maybe endup redoing as a dict? I think that'll make things a good deal easier
         self.verticies = []
         self._dragData = {"x" : 0, "y" : 0, "item": None}
+
+        #Needs to be renamed
         self._connectionData = {"item1": None, "item2": None}
 
     def addVertex(self, vert):
         #Might have to do some scope related shinanigans here, I'm not sure
         self.verticies.append(vert)
+
+    def removeVert(self, delVertHandle):
+        #This whole thing needs to be rewritten
+        #But I want to finish it once as a proof of concept
+        #Then I'll refactor
+        delVert = self.findVertWithHandleNum(delVertHandle)
+        for vert in self.verticies:
+            if vert.handleNum != delVertHandle:
+                #In the mesh array, we're on a vert
+                #that is not the one to be deleted
+                vert.removeConnection(delVert)
+                delVert.removeConnection(vert)
+
+        #All connections to and from delVert have been removed
+        #Now remove the deleted vert from the mesh array
+        self.verticies.remove(delVert)
+        #Delete it
+        #Not sure if I need to do so manually or if Python handles it
+        del delVert
+        #And rerender
+        self.render()
+        #Clean the connection data
+        self._connectionData["item1"] = None
 
     def addConnection(self, v1, v2):
         #Need to add checks so that a vertex can't be connected to itself
@@ -21,7 +51,7 @@ class Mesh:
         return self.verticies[v1].isConnected(self.verticies[v2])
 
     def render(self):
-        #self.canvas.delete("vert")
+        self.canvas.delete("vert")
         self.canvas.delete("Connection")
         for vert in self.verticies:
             vert.render()
@@ -143,3 +173,6 @@ class Mesh:
             item.render()
             #Return the new handleNum
             return item.getHandleNum()
+
+    def getSelectedVertHandle(self):
+        return self._connectionData["item1"]
